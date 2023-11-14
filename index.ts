@@ -12,7 +12,7 @@ async function main() {
 
   await Promise.all(
     fileNames.map((fileName) => {
-      const matchPicture = picturesNames.find((pic) => pic.includes(fileName));
+      const matchPicture = picturesNames.find((pic) => pic.includes(extractConsecutiveNumbers(fileName)));
       if (matchPicture) {
         return fs.copyFile(
           "./" + matchPicture,
@@ -21,6 +21,19 @@ async function main() {
       }
     })
   );
+}
+
+function extractConsecutiveNumbers(inputString: string) {
+  // Use a regular expression to find all sequences of 4 or more consecutive digits
+  const matches = inputString.match(/\d{4,}/g);
+
+  if (matches) {
+    // Join the sequences if there are multiple matches
+    return matches.join('');
+  } else {
+    // Return an empty string if no such sequences are found
+    return '';
+  }
 }
 
 main();
